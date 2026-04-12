@@ -1,0 +1,192 @@
+/* ------------------------------------------------------------------ */
+/* Landing page — hero overrides                                        */
+/* ------------------------------------------------------------------ */
+
+/* Override the grid layout from style.css with centered single-column */
+.hero {
+    padding: 4.5rem 2rem 5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 860px;
+    gap: 3rem;
+}
+
+.hero-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Badge */
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+    padding: 0.4rem 1.1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(26, 71, 42, 0.18);
+    margin-bottom: 1.75rem;
+}
+
+.hero-badge-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+}
+
+/* Title */
+.hero-title {
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+}
+
+.hero-title-accent {
+    display: block;
+    color: #2d8653;
+    font-style: normal;
+}
+
+/* Subtitle */
+.hero-subtitle {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    max-width: 540px;
+    margin-bottom: 2.25rem;
+}
+
+/* Buttons — both solid black */
+.hero-actions {
+    justify-content: center;
+}
+
+.hero-actions .btn-primary {
+    padding: 0.75rem 1.75rem;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+/* ------------------------------------------------------------------ */
+/* Dashboard mock card                                                  */
+/* ------------------------------------------------------------------ */
+
+.hero-dashboard {
+    width: 100%;
+    max-width: 760px;
+    background: #efede8;
+    border-radius: 16px;
+    padding: 1.25rem 1.5rem 1.75rem;
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.07);
+}
+
+/* Traffic-light dots */
+.dash-titlebar {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 1.25rem;
+}
+
+.dash-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+.dash-dot.red    { background: #ff5f57; }
+.dash-dot.yellow { background: #febc2e; }
+.dash-dot.green  { background: #28c840; }
+
+/* Stat cards row */
+.dash-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+    margin-bottom: 0.6rem;
+}
+
+.dash-stat {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    text-align: left;
+}
+
+.dash-stat-label {
+    font-size: 0.78rem;
+    color: var(--ink-muted);
+    margin-bottom: 0.4rem;
+}
+
+.dash-stat-value {
+    font-family: var(--font-display);
+    font-size: 1.65rem;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 0.3rem;
+}
+
+.dash-stat-note {
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+}
+.dash-stat-note.danger  { color: #c0392b; }
+.dash-stat-note.success { color: #2d8653; }
+
+/* Bar chart panel */
+.dash-chart {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.dash-row {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    align-items: center;
+    gap: 1rem;
+}
+
+.dash-cat {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    text-align: right;
+}
+
+.dash-track {
+    height: 9px;
+    background: #e5e3de;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.dash-fill {
+    height: 100%;
+    border-radius: 999px;
+}
+.dash-fill.food   { background: #d4960a; }
+.dash-fill.travel { background: #4a8fd4; }
+.dash-fill.bills  { background: #7b6bbf; }
+
+/* ------------------------------------------------------------------ */
+/* Responsive                                                           */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 600px) {
+    .dash-stats { grid-template-columns: 1fr; }
+    .hero-dashboard { padding: 1rem; }
+}
