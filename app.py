@@ -1,8 +1,12 @@
-from flask import Flask, render_template
+import os
 
-from database.db import init_db
+from flask import Flask, render_template, request, redirect, url_for, flash
+from werkzeug.security import generate_password_hash
+
+from database.db import init_db, get_db
 
 app = Flask(__name__)
+app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-spendly")
 
 with app.app_context():
     init_db()
@@ -17,8 +21,43 @@ def landing():
     return render_template("landing.html")
 
 
-@app.route("/register")
+@app.route("/register", methods=["GET", "POST"])
 def register():
+    if request.method == "POST":
+        name     = request.form.get("name", "").strip()
+        email    = request.form.get("email", "").strip().lower()
+        password = request.form.get("password", "")
+        confirm  = request.form.get("confirm_password", "")
+
+        if not all([name, email, password, confirm]):
+            flash("All fields are required.", "error")
+            return render_template("register.html")
+        if "@" not in email:
+            flash("Enter a valid email address.", "error")
+            return render_template("register.html")
+        if password != confirm:
+            flash("Passwords do not match.", "error")
+            return render_template("register.html")
+
+        conn = get_db()
+        existing = conn.execute(
+            "SELECT id FROM users WHERE email = ?", (email,)
+        ).fetchone()
+        if existing:
+            conn.close()
+            flash("An account with that email already exists.", "error")
+            return render_template("register.html")
+
+        with conn:
+            conn.execute(
+                "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+                (name, email, generate_password_hash(password)),
+            )
+        conn.close()
+
+        flash("Account created! Please sign in.", "success")
+        return redirect(url_for("login"))
+
     return render_template("register.html")
 
 
