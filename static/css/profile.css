@@ -1,0 +1,217 @@
+.profile-page {
+    padding: 3rem 2rem 5rem;
+}
+
+.profile-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Section 1 — User info */
+.profile-header-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.profile-avatar {
+    flex-shrink: 0;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-initials {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--accent);
+    line-height: 1;
+}
+
+.profile-name {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    color: var(--ink);
+    margin-bottom: 0.2rem;
+}
+
+.profile-email {
+    font-size: 0.9rem;
+    color: var(--ink-muted);
+    margin-bottom: 0.25rem;
+}
+
+.profile-since {
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+}
+
+/* Section 2 — Stats */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.stat-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem 1.5rem;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-muted);
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    color: var(--ink);
+    line-height: 1.1;
+}
+
+/* Section headings */
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.section-title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--ink);
+}
+
+/* Section 3 — Transaction table */
+.table-wrap {
+    overflow-x: auto;
+    padding: 0;
+}
+
+.txn-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.txn-table thead {
+    border-bottom: 1px solid var(--border);
+}
+
+.txn-table th {
+    padding: 0.85rem 1.25rem;
+    text-align: left;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-muted);
+    white-space: nowrap;
+}
+
+.txn-table td {
+    padding: 0.85rem 1.25rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--border-soft);
+    color: var(--ink-soft);
+}
+
+.txn-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.txn-table tbody tr:hover {
+    background: var(--paper-warm);
+}
+
+.txn-date {
+    font-size: 0.83rem;
+    color: var(--ink-faint);
+    white-space: nowrap;
+}
+
+.txn-desc {
+    color: var(--ink);
+    font-weight: 500;
+}
+
+.txn-amount {
+    text-align: right;
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+}
+
+.amount-col {
+    text-align: right;
+}
+
+/* Category badge — shared by table and breakdown */
+.category-badge {
+    display: inline-block;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.cat-food          { background: var(--accent-2-light); color: var(--accent-2); }
+.cat-travel        { background: var(--accent-light);   color: var(--accent); }
+.cat-bills         { background: var(--danger-light);   color: var(--danger); }
+.cat-entertainment { background: var(--paper-warm);     color: var(--ink-soft); border: 1px solid var(--border); }
+.cat-groceries     { background: var(--accent-light);   color: var(--accent); }
+
+/* Section 4 — Category list */
+.category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+}
+
+.category-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 1.25rem;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.category-row:last-child {
+    border-bottom: none;
+}
+
+.category-amount {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--ink);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .stats-row {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-header-card {
+        flex-direction: column;
+        text-align: center;
+    }
+}
