@@ -110,7 +110,100 @@ def logout():
 
 @app.route("/profile")
 def profile():
-    return "Profile page — coming in Step 4"
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    user = {
+        "name": "Nitish Kumar",
+        "email": "nitish@example.com",
+        "initials": "NK",
+        "member_since": "2 Jan 2026"
+    }
+
+    stats = {
+        "total_spent": "₹12,451",
+        "transaction_count": 10,
+        "top_category": "Food"
+    }
+
+    transactions = [
+        {
+            "date": "15 Apr 2026",
+            "description": "Lunch at Cafe",
+            "category": "Food",
+            "amount": "₹450",
+            "color_class": "badge-food"
+        },
+        {
+            "date": "14 Apr 2026",
+            "description": "Flight to Delhi",
+            "category": "Travel",
+            "amount": "₹4,500",
+            "color_class": "badge-travel"
+        },
+        {
+            "date": "10 Apr 2026",
+            "description": "Netflix subscription",
+            "category": "Entertainment",
+            "amount": "₹649",
+            "color_class": "badge-entertainment"
+        },
+        {
+            "date": "8 Apr 2026",
+            "description": "Grocery run",
+            "category": "Groceries",
+            "amount": "₹1,200",
+            "color_class": "badge-groceries"
+        },
+        {
+            "date": "5 Apr 2026",
+            "description": "Electricity bill",
+            "category": "Bills",
+            "amount": "₹1,800",
+            "color_class": "badge-bills"
+        }
+    ]
+
+    categories = [
+        {
+            "name": "Food",
+            "total_spent": "₹3,200",
+            "percentage": 45,
+            "color_class": "category-food"
+        },
+        {
+            "name": "Travel",
+            "total_spent": "₹4,820",
+            "percentage": 70,
+            "color_class": "category-travel"
+        },
+        {
+            "name": "Bills",
+            "total_spent": "₹2,799",
+            "percentage": 40,
+            "color_class": "category-bills"
+        },
+        {
+            "name": "Entertainment",
+            "total_spent": "₹1,249",
+            "percentage": 18,
+            "color_class": "category-entertainment"
+        },
+        {
+            "name": "Groceries",
+            "total_spent": "₹1,182",
+            "percentage": 17,
+            "color_class": "category-groceries"
+        }
+    ]
+
+    return render_template(
+        "profile.html",
+        user=user,
+        stats=stats,
+        transactions=transactions,
+        categories=categories
+    )
 
 
 @app.route("/expenses/add")

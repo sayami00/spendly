@@ -1,0 +1,379 @@
+/* ------------------------------------------------------------------ */
+/* Profile Page                                                       */
+/* ------------------------------------------------------------------ */
+
+.profile-section {
+    padding: 3rem 2rem;
+    background: var(--paper);
+}
+
+.profile-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* User Info Card                                                     */
+/* ------------------------------------------------------------------ */
+
+.profile-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 3rem;
+}
+
+.profile-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--paper-card);
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.profile-name {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
+}
+
+.profile-email {
+    font-size: 0.95rem;
+    color: var(--ink-muted);
+    margin-bottom: 0.5rem;
+}
+
+.profile-member-since {
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+    margin-bottom: 1.5rem;
+}
+
+.profile-edit-link {
+    display: inline-block;
+    color: var(--accent);
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.profile-edit-link:hover {
+    color: var(--ink);
+}
+
+/* ------------------------------------------------------------------ */
+/* Summary Stats                                                      */
+/* ------------------------------------------------------------------ */
+
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.stat-box {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+}
+
+.stat-value {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    color: var(--ink);
+    font-weight: 600;
+}
+
+/* ------------------------------------------------------------------ */
+/* Transactions Card                                                  */
+/* ------------------------------------------------------------------ */
+
+.transactions-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+}
+
+.card-title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+}
+
+.transactions-table {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.table-header {
+    display: grid;
+    grid-template-columns: 100px 1fr 120px 90px;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-soft);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.table-row {
+    display: grid;
+    grid-template-columns: 100px 1fr 120px 90px;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border-soft);
+    align-items: center;
+}
+
+.table-row:last-child {
+    border-bottom: none;
+}
+
+.col-date {
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+}
+
+.col-desc {
+    font-size: 0.9rem;
+    color: var(--ink);
+}
+
+.col-cat {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.col-amt {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-align: right;
+}
+
+/* ------------------------------------------------------------------ */
+/* Category Badges                                                    */
+/* ------------------------------------------------------------------ */
+
+.badge {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.badge-food {
+    background: var(--color-food);
+    color: white;
+}
+
+.badge-travel {
+    background: var(--color-travel);
+    color: white;
+}
+
+.badge-bills {
+    background: var(--color-bills);
+    color: white;
+}
+
+.badge-entertainment {
+    background: var(--color-entertainment);
+    color: white;
+}
+
+.badge-groceries {
+    background: var(--color-groceries);
+    color: white;
+}
+
+/* ------------------------------------------------------------------ */
+/* Categories Card                                                    */
+/* ------------------------------------------------------------------ */
+
+.categories-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+}
+
+.categories-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.category-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.category-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--ink);
+}
+
+.category-total {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+}
+
+.category-bar-track {
+    height: 8px;
+    background: var(--border-soft);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.category-bar {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.6s ease;
+}
+
+.category-bar.category-food {
+    background: var(--color-food);
+}
+
+.category-bar.category-travel {
+    background: var(--color-travel);
+}
+
+.category-bar.category-bills {
+    background: var(--color-bills);
+}
+
+.category-bar.category-entertainment {
+    background: var(--color-entertainment);
+}
+
+.category-bar.category-groceries {
+    background: var(--color-groceries);
+}
+
+/* ------------------------------------------------------------------ */
+/* Responsive                                                         */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 900px) {
+    .profile-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem;
+    }
+
+    .profile-info {
+        width: 100%;
+    }
+
+    .stats-row {
+        grid-template-columns: 1fr;
+    }
+
+    .table-header,
+    .table-row {
+        grid-template-columns: 80px 1fr 100px 80px;
+    }
+}
+
+@media (max-width: 600px) {
+    .profile-section {
+        padding: 1.5rem 1rem;
+    }
+
+    .profile-inner {
+        gap: 1.5rem;
+    }
+
+    .profile-card {
+        padding: 1.5rem;
+    }
+
+    .profile-avatar {
+        width: 60px;
+        height: 60px;
+        font-size: 1.4rem;
+    }
+
+    .profile-name {
+        font-size: 1.5rem;
+    }
+
+    .stat-box {
+        padding: 1rem;
+    }
+
+    .stat-value {
+        font-size: 1.4rem;
+    }
+
+    .transactions-card,
+    .categories-card {
+        padding: 1.5rem;
+    }
+
+    .table-header,
+    .table-row {
+        grid-template-columns: 60px 1fr 80px 70px;
+        gap: 0.75rem;
+        font-size: 0.75rem;
+    }
+
+    .col-date,
+    .col-desc,
+    .col-cat,
+    .col-amt {
+        font-size: 0.8rem;
+    }
+
+    .badge {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.65rem;
+    }
+}

@@ -28,6 +28,12 @@
     --radius-sm: 6px;
     --radius-md: 12px;
     --radius-lg: 20px;
+
+    --color-food: #F97316;
+    --color-travel: #3B82F6;
+    --color-bills: #EF4444;
+    --color-entertainment: #A855F7;
+    --color-groceries: #22C55E;
 }
 
 /* ------------------------------------------------------------------ */
