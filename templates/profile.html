@@ -26,11 +26,11 @@
         <div class="stats-row">
             <div class="stat-card">
                 <p class="stat-label">Total spent</p>
-                <p class="stat-value">{{ stats.total_spent }}</p>
+                <p class="stat-value">₹{{ stats.total }}</p>
             </div>
             <div class="stat-card">
                 <p class="stat-label">Transactions</p>
-                <p class="stat-value">{{ stats.transaction_count }}</p>
+                <p class="stat-value">{{ stats.count }}</p>
             </div>
             <div class="stat-card">
                 <p class="stat-label">Top category</p>
@@ -41,6 +41,21 @@
         <!-- Section 3: Transaction history -->
         <section class="profile-section">
             <h2 class="section-title">Recent transactions</h2>
+            <form method="GET" action="{{ url_for('profile') }}" class="date-filter-form">
+                <div class="filter-row">
+                    <div class="form-group">
+                        <label for="start_date">From</label>
+                        <input type="date" id="start_date" name="start_date"
+                               class="form-input" value="{{ start_date }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="end_date">To</label>
+                        <input type="date" id="end_date" name="end_date"
+                               class="form-input" value="{{ end_date }}">
+                    </div>
+                    <button type="submit" class="btn-primary">Apply</button>
+                </div>
+            </form>
             <div class="table-wrap auth-card">
                 <table class="txn-table">
                     <thead>
@@ -52,16 +67,24 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for txn in transactions %}
+                        {% if expenses %}
+                            {% for exp in expenses %}
+                            <tr>
+                                <td class="txn-date">{{ exp.date }}</td>
+                                <td class="txn-desc">{{ exp.description }}</td>
+                                <td>
+                                    <span class="category-badge category-badge--{{ exp.category | lower }}">{{ exp.category }}</span>
+                                </td>
+                                <td class="txn-amount">₹{{ exp.amount }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
                         <tr>
-                            <td class="txn-date">{{ txn.date }}</td>
-                            <td class="txn-desc">{{ txn.description }}</td>
-                            <td>
-                                <span class="category-badge {{ txn.category_class }}">{{ txn.category }}</span>
+                            <td colspan="4" style="text-align: center; color: var(--ink-faint); padding: 2rem 0;">
+                                No transactions for this period.
                             </td>
-                            <td class="txn-amount">{{ txn.amount }}</td>
                         </tr>
-                        {% endfor %}
+                        {% endif %}
                     </tbody>
                 </table>
             </div>
@@ -73,8 +96,14 @@
             <div class="category-list auth-card">
                 {% for cat in categories %}
                 <div class="category-row">
-                    <span class="category-badge {{ cat.class }}">{{ cat.name }}</span>
-                    <span class="category-amount">{{ cat.amount }}</span>
+                    <div class="cat-row-header">
+                        <span class="cat-row-name">{{ cat.name }}</span>
+                        <span class="cat-row-amount">₹{{ cat.amount }}</span>
+                    </div>
+                    <div class="cat-bar-track">
+                        <div class="cat-bar cat-bar--{{ cat.name | lower }}"
+                             style="width: {{ cat.percent }}%"></div>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
