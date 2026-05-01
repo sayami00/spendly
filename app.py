@@ -1,9 +1,13 @@
 import os
+from datetime import date
 
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from database.db import init_db, get_db
+from database.db import (
+    init_db, get_db, get_expenses_for_user, get_expense_stats,
+    get_top_category, get_category_breakdown
+)
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-spendly")
@@ -110,51 +114,95 @@ def logout():
 
 @app.route("/profile")
 def profile():
-    if not session.get("user_id"):
+    user_id = session.get("user_id")
+    if not user_id:
         return redirect(url_for("login"))
 
+    today = date.today()
+    default_start = today.replace(day=1).isoformat()
+    default_end = today.isoformat()
+
+    start_date = request.args.get("start_date", default_start)
+    end_date = request.args.get("end_date", default_end)
+
+    try:
+        start = date.fromisoformat(start_date)
+        end = date.fromisoformat(end_date)
+        if start > end:
+            flash("Start date cannot be after end date.", "error")
+            return redirect(url_for("profile"))
+    except ValueError:
+        return redirect(url_for("profile"))
+
+    conn = get_db()
+
+    user_row = conn.execute(
+        "SELECT name, email, created_at FROM users WHERE id = ?", (user_id,)
+    ).fetchone()
+
+    if not user_row:
+        conn.close()
+        return redirect(url_for("login"))
+
+    initials = "".join(word[0].upper() for word in user_row["name"].split())
+    member_since = user_row["created_at"][:10] if user_row["created_at"] else "Unknown"
+
+    expenses = get_expenses_for_user(conn, user_id, start_date, end_date)
+    stats_row = get_expense_stats(conn, user_id, start_date, end_date)
+    top_cat = get_top_category(conn, user_id, start_date, end_date)
+    categories_data = get_category_breakdown(conn, user_id, start_date, end_date)
+
+    conn.close()
+
+    total_spent = stats_row["total_spent"]
+    tx_count = stats_row["tx_count"]
+    top_category = top_cat["name"] if top_cat else "None"
+
+    formatted_expenses = [
+        {
+            "date": exp["date"],
+            "description": exp["description"],
+            "category": exp["category"],
+            "amount": f"{exp['amount']:.2f}"
+        }
+        for exp in expenses
+    ]
+
+    if categories_data:
+        max_amount = max(cat["total"] for cat in categories_data)
+    else:
+        max_amount = 1
+
+    formatted_categories = [
+        {
+            "name": cat["name"],
+            "amount": f"{cat['total']:.2f}",
+            "percent": int((cat["total"] / max_amount * 100)) if max_amount > 0 else 0
+        }
+        for cat in categories_data
+    ]
+
     user = {
-        "name":         session.get("user_name", "Demo User"),
-        "email":        "nitish@example.com",
-        "member_since": "January 2025",
-        "initials":     "".join(
-            w[0].upper() for w in session.get("user_name", "Demo User").split()
-        )[:2],
+        "name": user_row["name"],
+        "email": user_row["email"],
+        "initials": initials,
+        "member_since": member_since,
     }
 
     stats = {
-        "total_spent":       "₹12,480",
-        "transaction_count": 10,
-        "top_category":      "Food",
+        "total": f"{total_spent:.2f}",
+        "count": tx_count,
+        "top_category": top_category,
     }
-
-    transactions = [
-        {"date": "28 Apr 2026", "description": "Lunch at Cafe",       "category": "Food",          "category_class": "cat-food",          "amount": "₹450"},
-        {"date": "25 Apr 2026", "description": "Flight to Delhi",      "category": "Travel",        "category_class": "cat-travel",        "amount": "₹4,500"},
-        {"date": "22 Apr 2026", "description": "Electricity bill",     "category": "Bills",         "category_class": "cat-bills",         "amount": "₹1,800"},
-        {"date": "19 Apr 2026", "description": "Netflix subscription", "category": "Entertainment", "category_class": "cat-entertainment", "amount": "₹649"},
-        {"date": "15 Apr 2026", "description": "Weekend market",       "category": "Groceries",     "category_class": "cat-groceries",     "amount": "₹1,182"},
-        {"date": "10 Apr 2026", "description": "Dinner with family",   "category": "Food",          "category_class": "cat-food",          "amount": "₹780"},
-        {"date": "07 Apr 2026", "description": "Movie tickets",        "category": "Entertainment", "category_class": "cat-entertainment", "amount": "₹600"},
-        {"date": "03 Apr 2026", "description": "Internet plan",        "category": "Bills",         "category_class": "cat-bills",         "amount": "₹999"},
-        {"date": "02 Apr 2026", "description": "Ola ride",             "category": "Travel",        "category_class": "cat-travel",        "amount": "₹320"},
-        {"date": "01 Apr 2026", "description": "Grocery run",          "category": "Groceries",     "category_class": "cat-groceries",     "amount": "₹1,200"},
-    ]
-
-    categories = [
-        {"name": "Food",          "class": "cat-food",          "amount": "₹2,430"},
-        {"name": "Travel",        "class": "cat-travel",        "amount": "₹4,820"},
-        {"name": "Bills",         "class": "cat-bills",         "amount": "₹2,799"},
-        {"name": "Entertainment", "class": "cat-entertainment", "amount": "₹1,249"},
-        {"name": "Groceries",     "class": "cat-groceries",     "amount": "₹1,182"},
-    ]
 
     return render_template(
         "profile.html",
         user=user,
         stats=stats,
-        transactions=transactions,
-        categories=categories,
+        expenses=formatted_expenses,
+        categories=formatted_categories,
+        start_date=start_date,
+        end_date=end_date,
     )
 
 
@@ -174,4 +222,5 @@ def delete_expense(id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+    debug_mode = os.environ.get("FLASK_DEBUG", "false").lower() == "true"
+    app.run(debug=debug_mode, port=5001)

@@ -204,6 +204,24 @@
     color: var(--ink);
 }
 
+/* Date filter form */
+.date-filter-form {
+    margin-bottom: 1.5rem;
+}
+
+.filter-row {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.filter-row .form-group {
+    margin-bottom: 0;
+    flex: 1;
+    min-width: 140px;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
     .stats-row {

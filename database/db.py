@@ -54,6 +54,48 @@ def init_db():
     conn.close()
 
 
+def get_expenses_for_user(conn, user_id, start_date, end_date):
+    """Fetch expenses for user within date range, ordered by date DESC."""
+    return conn.execute(
+        "SELECT e.amount, e.description, e.date, c.name AS category FROM expenses e "
+        "JOIN categories c ON c.id = e.category_id "
+        "WHERE e.user_id = ? AND e.date >= ? AND e.date <= ? "
+        "ORDER BY e.date DESC",
+        (user_id, start_date, end_date)
+    ).fetchall()
+
+
+def get_expense_stats(conn, user_id, start_date, end_date):
+    """Get total spent and transaction count for user within date range."""
+    return conn.execute(
+        "SELECT COALESCE(SUM(amount), 0) AS total_spent, COUNT(*) AS tx_count FROM expenses "
+        "WHERE user_id = ? AND date >= ? AND date <= ?",
+        (user_id, start_date, end_date)
+    ).fetchone()
+
+
+def get_top_category(conn, user_id, start_date, end_date):
+    """Get the top spending category for user within date range."""
+    return conn.execute(
+        "SELECT c.name FROM expenses e "
+        "JOIN categories c ON c.id = e.category_id "
+        "WHERE e.user_id = ? AND e.date >= ? AND e.date <= ? "
+        "GROUP BY e.category_id ORDER BY SUM(e.amount) DESC LIMIT 1",
+        (user_id, start_date, end_date)
+    ).fetchone()
+
+
+def get_category_breakdown(conn, user_id, start_date, end_date):
+    """Get spending breakdown by category for user within date range."""
+    return conn.execute(
+        "SELECT c.name, SUM(e.amount) AS total FROM expenses e "
+        "JOIN categories c ON c.id = e.category_id "
+        "WHERE e.user_id = ? AND e.date >= ? AND e.date <= ? "
+        "GROUP BY e.category_id ORDER BY total DESC",
+        (user_id, start_date, end_date)
+    ).fetchall()
+
+
 def seed_db():
     """Insert sample data for development. Safe to call multiple times — skips if demo user exists."""
     conn = get_db()
